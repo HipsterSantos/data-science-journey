@@ -2,20 +2,37 @@
 const {graphql, buildSchema } = require('graphql'); 
 
 const schema = buildSchema (`
-  type Query {
-      message: String
+
+type Query{ 
+    users: User
+    message: String
+  }
+  type User{
+      id: ID!
+      email: String! 
+      name: String! 
+      avatarUrl: String!
   }
 `)
-
+const user  = { 
+    id:1,
+    email:'jessica@costa', 
+    name:'jessica',
+    avatarUrl:'homem'
+}
 const rootValue = {
-    message:  ()=> 'GrahQL works'
+    message:  ()=> 'GrahQL works',
+    users: ()=> user,
 }
 
 graphql(
     schema,
     `
     query{
-        message
+        users{
+            id
+            name
+        }
     }
     ` ,
     rootValue
