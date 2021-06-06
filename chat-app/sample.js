@@ -3,7 +3,7 @@ const {graphql, buildSchema } = require('graphql');
 const {graphqlHTTP }= require('express-graphql'); 
 const express = require('express');
 const app = express();
-const cryto = require('crypto');
+const crypto = require('crypto');
 const schema = buildSchema (`
 
  type Query{ 
