@@ -66,10 +66,10 @@ const resolvers = {
     Query:{
         messages:  ()=> user.messages,
         users: ()=>  user.users.map(c=>new User(c).message() ),
-        user: ({id})=>user.users.filter(vl => vl.id == id)
+        user: (root,{id})=>user.users.filter(vl => vl.id == id)
     }, 
     Mutation:{
-        addUser:({email,name})=>{
+        addUser:(root,{email,name})=>{
             const newUser = {
                 id: crypto.randomBytes(10).toString(),
                 name,email
