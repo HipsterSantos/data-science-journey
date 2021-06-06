@@ -1,10 +1,13 @@
 
-const {graphql, buildSchema } = require('graphql'); 
-
+const {graphql, buildSchema } = require('graphql');
+const {graphqlHTTP }= require('express-graphql'); 
+const express = require('express');
+const app = express();
+const cryto = require('crypto');
 const schema = buildSchema (`
 
-type Query{ 
-    users: User
+ type Query{ 
+    users: [User!]!
     message: String
   }
   type User{
@@ -13,16 +16,37 @@ type Query{
       name: String! 
       avatarUrl: String!
   }
+
+  type Mutation{
+      addUser(email:String!,name: String):User
+  }
 `)
-const user  = { 
+const user  ={users:[{ 
+    id:1,
+    email:'jessica@costa', 
+    name:'jessica',
+    avatarUrl:'homem'
+}, { 
+    id:1,
+    email:'jessica@costa', 
+    name:'jessica',
+    avatarUrl:'homem'
+},{ 
     id:1,
     email:'jessica@costa', 
     name:'jessica',
     avatarUrl:'homem'
 }
+]
+};
 const rootValue = {
     message:  ()=> 'GrahQL works',
-    users: ()=> user,
+    users: ()=>  user.users,
+    addUser:()=>{
+        const user = {
+            
+        }
+    }
 }
 
 graphql(
@@ -30,13 +54,22 @@ graphql(
     `
     query{
         users{
-            id
             name
+            id
+            email
         }
     }
     ` ,
     rootValue
 
     
-).then(console.log)
+).then(_=>console.dir(_,{depth:null}))
 .catch(console.error)
+
+
+app.use('graphql',graphqlHTTP({
+    schema,
+    rootValue,
+    graphql: true
+}))
+app.listen(4000,_=>console.log('listening on port 4000'))
