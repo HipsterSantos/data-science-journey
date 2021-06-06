@@ -41,16 +41,20 @@ const typeDefs = gql`
  type Query{ 
     users: [User!]!
     user(id:ID!): User
-    messages: [Message!]!
+    messages: [Message]
   }
   type User{
       id: ID!
       email: String! 
       name: String! 
       avatarUrl: String!
-      messages:Message
+      messages:[Message]
+      getOneMessage:Message
+      share(shareInput):String
   }
-  
+  Input shareInput{
+      name:String
+  }
   type Message{
       id: ID! 
       body: String!
@@ -82,7 +86,16 @@ const resolvers = {
         }
     },
     User:{
-        messages: user  =>data.messages.filter(message => message.userId)
+        messages: user  => {
+          return (data.messages.filter(message=>message.userId == user.id))
+        },
+        getOneMessage: user=>{
+            return data.messages[0];
+        },
+        share: (parent , val) =>{
+            console.log('sharing my house')
+            return val;
+        }
     }
   }
 
