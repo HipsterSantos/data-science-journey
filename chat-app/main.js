@@ -1,6 +1,7 @@
+const crypto =require('crypto')
 const {ApolloServer,gql} =  require('apollo-server'); 
 // const {typeDefs,resolvers} = require('./schema');
-const user  ={users:[{ 
+const data  ={users:[{ 
     id:1,
     email:'jessica@costa', 
     name:'jessica',
@@ -61,12 +62,14 @@ const typeDefs = gql`
       addUser(email:String!,name: String):User
   }
 
+ 
+
 `;
 const resolvers = {
     Query:{
-        messages:  ()=> user.messages,
-        users: ()=>  user.users.map(c=>new User(c).message() ),
-        user: (root,{id})=>user.users.filter(vl => vl.id == id)
+        messages:  ()=> data.messages,
+        users: () =>  data.users,
+        user: (root,{id})=>data.users.find(vl => vl.id == id)
     }, 
     Mutation:{
         addUser:(root,{email,name})=>{
@@ -74,9 +77,12 @@ const resolvers = {
                 id: crypto.randomBytes(10).toString(),
                 name,email
             }
-            user.users.push(newUser)
+            data.users.push(newUser)
             return newUser;
         }
+    },
+    User:{
+        messages: user  =>data.messages.filter(message => message.userId)
     }
   }
 
