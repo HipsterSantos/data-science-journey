@@ -50,11 +50,8 @@ const typeDefs = gql`
       avatarUrl: String!
       messages:[Message]
       getOneMessage:Message
-      share(shareInput):String
   }
-  Input shareInput{
-      name:String
-  }
+  
   type Message{
       id: ID! 
       body: String!
@@ -91,10 +88,6 @@ const resolvers = {
         },
         getOneMessage: user=>{
             return data.messages[0];
-        },
-        share: (parent , val) =>{
-            console.log('sharing my house')
-            return val;
         }
     }
   }
