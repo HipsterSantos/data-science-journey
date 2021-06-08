@@ -12,9 +12,9 @@ const IN_PROD = NODE_ENV == 'production';
     
     mongoose.connect(DB_URI,
     {useNewUrlParse:true,useUnifiedTopology:true})
-    .then((res)=>console.log('connected '))
+    .then((res)=>console.log('connected '+res))
     .catch((er)=>console.error(er))
-    console.log(IN_PROD)
+    console.log('Is in Production',IN_PROD)
     app.disable('x-powered-by');
     
     const server = new ApolloServer({typeDefs,resolvers,playground: !IN_PROD})

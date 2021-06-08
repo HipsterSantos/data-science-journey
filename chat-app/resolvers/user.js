@@ -1,4 +1,5 @@
 const { mongoose } = require('mongoose');
+const bcrypt = require('bcrypt');
 const { UserInputError } = require('apollo-server-express');
 const User = require('../models/user');
 
@@ -15,7 +16,8 @@ Query: {
     }
 },
 Mutation:{
-    signUp:(root,args,context,info)=> {
+    signUp: async (root,args,context,info)=> {
+        console.log(await User.find({}))
         return User.create(args)
     }
 }
