@@ -18,5 +18,5 @@ const IN_PROD = NODE_ENV == 'production';
     app.disable('x-powered-by');
     
     const server = new ApolloServer({typeDefs,resolvers,playground: !IN_PROD})
-    server.listen(4000,_=>console.log('listening on port 4000'));
+    server.listen(APP_PORT,_=>console.log(`listening on port ${APP_PORT}`));
 })().catch(console.log)
